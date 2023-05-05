@@ -41,14 +41,10 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Get current date
-        id: getDateTag
-        run: echo "dateTag=$(date +'%y%m%d.%H%M%S')" >> $GITHUB_OUTPUT
-
       - name: Build and push Docker image
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}, 1.0.${{ github.run_number }},${{ steps.getDateTag.outputs.dateTag }}'
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
