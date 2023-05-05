@@ -1,6 +1,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
 WORKDIR /sln
 
+LABEL org.opencontainers.image.description "Sample test application"
+
 # Copy project file and restore
 COPY "./src/RicardoV.KubPocTest.Mvc/RicardoV.KubPocTest.Mvc.csproj" "./src/RicardoV.KubPocTest.Mvc/RicardoV.KubPocTest.Mvc.csproj"
 RUN dotnet restore ./src/RicardoV.KubPocTest.Mvc/RicardoV.KubPocTest.Mvc.csproj
