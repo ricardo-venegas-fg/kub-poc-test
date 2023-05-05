@@ -1,0 +1,81 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build (RicardoV.KubPocTest.Api)",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/RicardoV.KubPocTest.Api/RicardoV.KubPocTest.Api.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "publish (RicardoV.KubPocTest.Api)",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/src/RicardoV.KubPocTest.Api/RicardoV.KubPocTest.Api.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "watch (RicardoV.KubPocTest.Api)",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "--project",
+                "${workspaceFolder}/src/RicardoV.KubPocTest.Api/RicardoV.KubPocTest.Api.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build (RicardoV.KubPocTest.Worker)",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/RicardoV.KubPocTest.Worker/RicardoV.KubPocTest.Worker.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish (RicardoV.KubPocTest.Worker)",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/src/RicardoV.KubPocTest.Worker/RicardoV.KubPocTest.Worker.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "watch (RicardoV.KubPocTest.Worker)",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "--project",
+                "${workspaceFolder}/src/RicardoV.KubPocTest.Worker/RicardoV.KubPocTest.Worker.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}
