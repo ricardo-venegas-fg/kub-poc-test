@@ -84,8 +84,8 @@ jobs:
       - name: Publish Helm chart to GHCR
         run: |
           helm package charts/kub-poc-test
-          helm push kub-poc-test-0.1.6.tgz oci://ghcr.io/ricardo-venegas-fg/charts
-          rm kub-poc-test-0.1.6.tgz            
+          helm push kub-poc-test-0.1.7.tgz oci://ghcr.io/ricardo-venegas-fg/charts
+          rm kub-poc-test-0.1.7.tgz            
 
       - name: Publish Flux OCI artifact to GHCR
         run: |
