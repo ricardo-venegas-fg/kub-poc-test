@@ -25,6 +25,13 @@ jobs:
       packages: write
 
     steps:
+      - uses: fluxcd/flux2/action@main
+      
+      - name: Setup Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.10.3
+      
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -48,3 +55,38 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Prepare
+        id: prep
+        run: |
+          VERSION=sha-${GITHUB_SHA::8}
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF/refs\/tags\//}
+          fi
+          echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+          echo "REVISION=${GITHUB_SHA}" >> $GITHUB_OUTPUT
+      
+      - name: Generate images meta
+        id: metaimages
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            ghcr.io/ricardo-venegas-fg/kub-poc-test
+          tags: |
+            type=raw,value=${{ steps.prep.outputs.VERSION }}
+            type=raw,value=latest
+            
+      - name: Publish Helm chart to GHCR
+        run: |
+          helm package charts/kub-pod-test
+          helm push kub-poc-test-${{ steps.prep.outputs.VERSION }}.tgz oci://ghcr.io/ricardo-venegas-fg/charts
+          rm kub-poc-test-${{ steps.prep.outputs.VERSION }}.tgz            
+
+      - name: Publish Flux OCI artifact to GHCR
+        run: |
+          flux push artifact oci://ghcr.io/ricardo-venegas-fg/manifests/kub-pod-test:${{ steps.prep.outputs.VERSION }} \
+            --path="./kustomize" \
+            --source="${{ github.event.repository.html_url }}" \
+            --revision="${GITHUB_REF_NAME}/${GITHUB_SHA}"
+          flux tag artifact oci://ghcr.io/ricardo-venegas-fg/manifests/kub-pod-test:${{ steps.prep.outputs.VERSION }} --tag latest
