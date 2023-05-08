@@ -48,14 +48,6 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
       - name: Prepare
         id: prep
         run: |
@@ -66,6 +58,15 @@ jobs:
           echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
           echo "REVISION=${GITHUB_SHA}" >> $GITHUB_OUTPUT
+  
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.prep.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
       
       - name: Generate images meta
         id: metaimages
@@ -79,7 +80,7 @@ jobs:
             
       - name: Publish Helm chart to GHCR
         run: |
-          helm package charts/kub-pod-test
+          helm package charts/kub-poc-test
           helm push kub-poc-test-${{ steps.prep.outputs.VERSION }}.tgz oci://ghcr.io/ricardo-venegas-fg/charts
           rm kub-poc-test-${{ steps.prep.outputs.VERSION }}.tgz            
 
