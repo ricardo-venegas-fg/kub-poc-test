@@ -1,0 +1,14 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: kub-poc-test
+spec:
+  type: ClusterIP
+  selector:
+    app: kub-poc-test
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: http
